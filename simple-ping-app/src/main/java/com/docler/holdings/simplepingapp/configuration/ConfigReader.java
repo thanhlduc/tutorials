@@ -17,10 +17,13 @@ public enum ConfigReader {
 	private static final String FILE_NOT_FOUND = "File not found ";
 	private static final String KEY_NOT_NULL = "Key not null ";
 
+	public static final String REPORT_HOST = "reportHost";
+	public static final String SURVEY_HOST1 = "jasminHost";
+	public static final String SURVEY_HOST2 = "oranumHost";
+
 	private transient String fileName = "simplePingApp.properties";
 	private transient Properties props;
-	private transient final Logger logger = Logger
-			.getLogger(ConfigReader.class);
+	private transient final Logger logger = Logger.getLogger(ConfigReader.class);
 
 	/**
 	 * Constructor
@@ -32,8 +35,7 @@ public enum ConfigReader {
 
 	private void init() {
 		props = new Properties();
-		try (InputStream inputStream = Thread.currentThread()
-				.getContextClassLoader().getResourceAsStream(fileName)) {
+		try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName)) {
 			if (inputStream == null) {
 				throw new FileNotFoundException(FILE_NOT_FOUND + fileName);
 			}

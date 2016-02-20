@@ -1,4 +1,4 @@
-package com.docler.holdings.simplepingapp.publication;
+package com.docler.holdings.simplepingapp.config;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;

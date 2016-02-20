@@ -2,20 +2,12 @@ package com.docler.holdings.simplepingapp.reporting;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -25,6 +17,7 @@ import org.apache.http.message.BasicNameValuePair;
 public class ReportSender {
 
 	private static final String USER_AGENT = "Mozilla/5.0";
+	private transient Logger logger = Logger.getLogger(getClass());
 
 	/**
 	 * Constructor
@@ -33,83 +26,67 @@ public class ReportSender {
 
 	}
 
-	// HTTP POST request
-	public void sendPost() throws Exception {
+	/**
+	 * HTTP POST request
+	 * 
+	 * @param urlAddress
+	 * @param content
+	 * @return HTTP response code or -1 if error
+	 */
+	public int post(String urlAddress, String content) {
+		int httpResponseCode = -1;
+		URL url = null;
+		try {
+			url = new URL(urlAddress);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			logger.info("Sending 'POST' request to URL : " + url.toString());
 
-		String url = "https://www.doclerholding.com/en/main/";
-		URL obj = new URL(url);
-		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+			// add request header
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", USER_AGENT);
+			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
-		// add reqest header
-		con.setRequestMethod("POST");
-		con.setRequestProperty("User-Agent", USER_AGENT);
-		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+			// Send post request
+			con.setDoOutput(true);
+			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+			wr.writeBytes(content);
+			wr.flush();
+			wr.close();
+			logger.info("Post content : " + content);
 
-		String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
+			httpResponseCode = parseResponse(content, url, con);
 
-		// Send post request
-		con.setDoOutput(true);
-		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-		wr.writeBytes(urlParameters);
-		wr.flush();
-		wr.close();
+		} catch (IOException ex) {
+			logger.error("HTTP Post request error : " + urlAddress + " with content: " + content);
+		}
 
+		return httpResponseCode;
+	}
+
+	/**
+	 * Parse post response
+	 * 
+	 * @param content
+	 * @param url
+	 * @param con
+	 * @return http response code
+	 * @throws IOException
+	 */
+	private int parseResponse(String content, URL url, HttpURLConnection con) throws IOException {
 		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + urlParameters);
-		System.out.println("Response Code : " + responseCode);
+		logger.info("Response Code : " + responseCode);
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(
-				con.getInputStream()));
+		BufferedReader buffReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
-
-		while ((inputLine = in.readLine()) != null) {
+		while ((inputLine = buffReader.readLine()) != null) {
 			response.append(inputLine);
 		}
-		in.close();
+		buffReader.close();
 
-		// print result
-		System.out.println(response.toString());
+		logger.info("Response content : " + response.toString());
 
+		return responseCode;
 	}
 
-	// HTTP POST request
-	public void sendHttpPost() throws Exception {
-
-		String url = "https://www.doclerholding.com/en/main/";
-
-		HttpClient client = new DefaultHttpClient();
-		HttpPost post = new HttpPost(url);
-
-		// add header
-		post.setHeader("User-Agent", USER_AGENT);
-
-		List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-		urlParameters.add(new BasicNameValuePair("sn", "C02G8416DRJM"));
-		urlParameters.add(new BasicNameValuePair("cn", ""));
-		urlParameters.add(new BasicNameValuePair("locale", ""));
-		urlParameters.add(new BasicNameValuePair("caller", ""));
-		urlParameters.add(new BasicNameValuePair("num", "12345"));
-
-		post.setEntity(new UrlEncodedFormEntity(urlParameters));
-
-		HttpResponse response = client.execute(post);
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + post.getEntity());
-		System.out.println("Response Code : "
-				+ response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(new InputStreamReader(response
-				.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-
-		System.out.println(result.toString());
-
-	}
 }
