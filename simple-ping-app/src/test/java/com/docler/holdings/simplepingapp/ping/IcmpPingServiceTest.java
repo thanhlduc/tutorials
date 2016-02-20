@@ -9,16 +9,16 @@ import org.junit.Test;
 import com.docler.holdings.simplepingapp.configuration.ConfigReader;
 
 /**
- * Test for {@link ICMPPingService}
+ * Test for {@link IcmpPingService}
  *
  */
-public class ICMPPingServiceTest {
+public class IcmpPingServiceTest {
 
 	private transient IPingService pingService;
 
 	@Before
 	public void setUp() {
-		pingService = new ICMPPingService();
+		pingService = new IcmpPingService();
 	}
 
 	@Test
