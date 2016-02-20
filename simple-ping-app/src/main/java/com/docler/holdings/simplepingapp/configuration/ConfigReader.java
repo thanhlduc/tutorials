@@ -17,7 +17,7 @@ public enum ConfigReader {
 	private static final String FILE_NOT_FOUND = "File not found ";
 	private static final String KEY_NOT_NULL = "Key not null ";
 
-	private static final String fileName = "simplePingApp.properties";
+	private transient String fileName = "simplePingApp.properties";
 	private transient Properties props;
 	private transient final Logger logger = Logger
 			.getLogger(ConfigReader.class);
@@ -57,4 +57,5 @@ public enum ConfigReader {
 		}
 		return props.getProperty(key);
 	}
+
 }
