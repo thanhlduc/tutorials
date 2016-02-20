@@ -20,6 +20,8 @@ public enum ConfigReader {
 	public static final String REPORT_HOST = "reportHost";
 	public static final String SURVEY_HOST1 = "jasminHost";
 	public static final String SURVEY_HOST2 = "oranumHost";
+	public static final String WINDOWS_ICMP_CMD = "windowsIcmpCommand";
+	public static final String LINUX_ICMP_CMD = "linuxIcmpCommand";
 
 	private transient String fileName = "simplePingApp.properties";
 	private transient Properties props;

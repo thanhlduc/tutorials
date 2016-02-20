@@ -1,13 +1,13 @@
 package com.docler.holdings.simplepingapp.reporting;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.apache.log4j.Logger;
+
+import com.docler.holdings.simplepingapp.helper.StreamReader;
 
 /**
  * 
@@ -75,17 +75,8 @@ public class ReportSender {
 	private int parseResponse(String content, URL url, HttpURLConnection con) throws IOException {
 		int responseCode = con.getResponseCode();
 		logger.info("Response Code : " + responseCode);
-
-		BufferedReader buffReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-		while ((inputLine = buffReader.readLine()) != null) {
-			response.append(inputLine);
-		}
-		buffReader.close();
-
-		logger.info("Response content : " + response.toString());
-
+		String responseContent = StreamReader.readStream(con.getInputStream());
+		logger.info("Response content : " + responseContent);
 		return responseCode;
 	}
 
