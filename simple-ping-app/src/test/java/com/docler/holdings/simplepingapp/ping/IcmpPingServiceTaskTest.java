@@ -9,31 +9,28 @@ import org.junit.Test;
 import com.docler.holdings.simplepingapp.configuration.ConfigReader;
 
 /**
- * 
- * Test for {@link TcpIpPingServiceTask}
+ * Test for {@link IcmpPingServiceTask}
  *
  */
-public class TcpIpPingServiceTest {
-	private TcpIpPingServiceTask pingService;
+public class IcmpPingServiceTaskTest {
+
+	private transient IPingService pingService;
 
 	@Before
 	public void setUp() {
-		pingService = new TcpIpPingServiceTask();
+		pingService = new IcmpPingServiceTask();
 	}
 
 	@Test
 	public void ping_URL_jasminDotcom_ReturnPingResult() {
 		String jasminURL = ConfigReader.INSTANCE.getProperty(ConfigReader.SURVEY_HOST1);
-		pingService.setTimeout(300);
 		String pingResult = pingService.ping(jasminURL);
-		assertThat(!pingResult.isEmpty(), is(true));
+		assertThat(pingResult.contains(jasminURL), is(true));
 	}
 
 	@Test
-	public void ping_InvalidURL_ReturnEmptyString() {
+	public void ping_InvalidURL_ReturnNull() {
 		String pingResult = pingService.ping("unknown");
-		pingService.setTimeout(300);
-		assertThat(pingResult, is(""));
+		assertThat(pingResult.contains("unknown"), is(true));
 	}
-
 }

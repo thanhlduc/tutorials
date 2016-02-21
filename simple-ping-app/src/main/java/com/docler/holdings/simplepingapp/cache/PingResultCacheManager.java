@@ -17,12 +17,15 @@ public enum PingResultCacheManager {
 
 	public static final String ICMP_CACHE_NAME = "icmpCache";
 	public static final String TCPIP_CACHE_NAME = "tcpipCache";
+	public static final String TRACE_ROUTE_CACHE_NAME = "traceRouteCache";
 
 	private CacheManager cacheManager;
 
 	private Ehcache icmpCache;
 
 	private Ehcache tcpipCache;
+
+	private Ehcache traceRouteCache;
 
 	private transient final Logger logger = Logger.getLogger(PingResultCacheManager.class);
 
@@ -36,6 +39,7 @@ public enum PingResultCacheManager {
 			cacheManager = createCacheManager();
 			icmpCache = createCache(ICMP_CACHE_NAME);
 			tcpipCache = createCache(TCPIP_CACHE_NAME);
+			traceRouteCache = createCache(TRACE_ROUTE_CACHE_NAME);
 		} catch (Exception e) {
 			logger.error("Cannot initiate an instance of ReportCacheManager", e);
 		}
@@ -60,6 +64,17 @@ public enum PingResultCacheManager {
 		logger.info("Create Ehcache with name: " + cacheName);
 		Ehcache cache = cacheManager.getEhcache(cacheName);
 		return cache;
+	}
+
+	/**
+	 * Add new trace route result to Trace Route Cache
+	 * 
+	 * @param key
+	 * @param pingResult
+	 */
+	public void putToTraceRouteCache(String key, PingResult pingResult) {
+		Element element = new Element(key, pingResult);
+		traceRouteCache.put(element);
 	}
 
 	/**
@@ -92,6 +107,16 @@ public enum PingResultCacheManager {
 	 */
 	public PingResult getFromIcmpCache(String key) {
 		return getFromCache(icmpCache, key);
+	}
+
+	/**
+	 * Get a ping result from Trace route cache
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public PingResult getFromTraceRouteCache(String key) {
+		return getFromCache(traceRouteCache, key);
 	}
 
 	private PingResult getFromCache(Ehcache cache, String key) {

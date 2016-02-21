@@ -27,6 +27,19 @@ public class PingResultCacheManagerTest {
 	}
 
 	@Test
+	public void putToTraceRouteCache_Key_URL1_PingResult_Return1ElementInCache() {
+		PingResult pingResult = new PingResult();
+		Date today = new Date();
+		pingResult.setPingDate(today);
+		pingResult.setPingResult("ping1");
+		PingResultCacheManager.INSTANCE.putToTraceRouteCache("URL1", pingResult);
+
+		PingResult cachedResult = PingResultCacheManager.INSTANCE.getFromTraceRouteCache("URL1");
+		assertThat(cachedResult.getPingDate(), is(today));
+		assertThat(cachedResult.getPingResult(), is("ping1"));
+	}
+
+	@Test
 	public void putToTcpIpCache_Key_URL1_PingResult_Return1ElementInCache() {
 		PingResult pingResult = new PingResult();
 		Date today = new Date();

@@ -5,28 +5,30 @@ import com.docler.holdings.simplepingapp.configuration.ConfigReader;
 
 /**
  * 
- * ICMP protocol ping service
+ * Trace route ping service
  *
  */
-public final class IcmpPingServiceTask extends AbstractCommandPingServiceTask {
+public final class TraceRoutePingServiceTask extends AbstractCommandPingServiceTask implements IPingService {
+
+	private static final String TRACE_ROUTE = "Trace Route";
 
 	/**
 	 * Default constructor
 	 */
-	public IcmpPingServiceTask() {
+	public TraceRoutePingServiceTask() {
 		super();
 	}
 
 	/**
-	 * Default constructor
+	 * Constructor with params
 	 */
-	public IcmpPingServiceTask(String url) {
+	public TraceRoutePingServiceTask(String url) {
 		super(url);
 	}
 
 	@Override
 	protected void savePingResult(String url, String result) {
-		PingResultCacheManager.INSTANCE.putToIcmpCache(url, createPingResult(url, result));
+		PingResultCacheManager.INSTANCE.putToTraceRouteCache(url, createPingResult(url, result));
 	}
 
 	@Override
@@ -34,12 +36,12 @@ public final class IcmpPingServiceTask extends AbstractCommandPingServiceTask {
 		StringBuilder cmd = new StringBuilder();
 		if (System.getProperty(OS_NAME).startsWith(WINDOWS)) {
 			// For Windows
-			cmd.append(ConfigReader.INSTANCE.getProperty(ConfigReader.WINDOWS_ICMP_CMD));
+			cmd.append(ConfigReader.INSTANCE.getProperty(ConfigReader.WINDOWS_TRACE_CMD));
 			cmd.append(SPACE);
 			cmd.append(url);
 		} else {
 			// For Linux and OSX
-			cmd.append(ConfigReader.INSTANCE.getProperty(ConfigReader.LINUX_ICMP_CMD));
+			cmd.append(ConfigReader.INSTANCE.getProperty(ConfigReader.LINUX_TRACE_CMD));
 			cmd.append(SPACE);
 			cmd.append(url);
 		}
@@ -48,8 +50,13 @@ public final class IcmpPingServiceTask extends AbstractCommandPingServiceTask {
 	}
 
 	@Override
+	public void run() {
+		ping(url);
+	}
+
+	@Override
 	protected String getProtocol() {
-		return "ICMP";
+		return TRACE_ROUTE;
 	}
 
 }

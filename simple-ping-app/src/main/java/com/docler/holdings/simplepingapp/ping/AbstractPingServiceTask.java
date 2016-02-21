@@ -1,5 +1,6 @@
 package com.docler.holdings.simplepingapp.ping;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.TimerTask;
 
@@ -18,7 +19,19 @@ import com.docler.holdings.simplepingapp.reporting.ReportSender;
  */
 public abstract class AbstractPingServiceTask extends TimerTask implements IPingService {
 
-	protected static final String PING_ERROR = "Unable to ping host: ";
+	private static final String PING_RESULT = " result: ";
+
+	private static final String FOR_HOST = " for host: ";
+
+	private static final String COMMAND = " command: ";
+
+	private static final String PING_WITH = "Ping with ";
+
+	protected static final String PING_ERROR = "Unable to ping with protocol: ";
+
+	protected static final String SPACE = " ";
+	protected static final String WINDOWS = "Windows";
+	protected static final String OS_NAME = "os.name";
 
 	protected final Logger logger = Logger.getLogger(getClass());
 
@@ -39,7 +52,45 @@ public abstract class AbstractPingServiceTask extends TimerTask implements IPing
 		this.url = url;
 	}
 
+	@Override
+	public String ping(String url) {
+		String result = "";
+		try {
+			String pingCmd = getPingCommand(url);
+			logger.info(PING_WITH + getProtocol() + COMMAND + pingCmd);
+			result = processPingCommand(pingCmd);
+		} catch (Exception e) {
+			logger.error(PING_ERROR + getProtocol() + FOR_HOST + url, e);
+			// Publish report
+			publishReport(url);
+		}
+
+		// Save report
+		savePingResult(url, result);
+		logger.info(PING_WITH + getProtocol() + PING_RESULT + result);
+		return result;
+	}
+
 	/**
+	 * Process ping command
+	 * 
+	 * @param pingCmd
+	 * @return a String of ping result
+	 * @throws InterruptedException
+	 * @throws IOException
+	 */
+	protected abstract String processPingCommand(String pingCmd) throws IOException, InterruptedException;
+
+	/**
+	 * Get ping command for a protocol
+	 * 
+	 * @param url
+	 * @return a String
+	 */
+	protected abstract String getPingCommand(String url);
+
+	/**
+	 * Publish the report to an url
 	 * 
 	 * @param url
 	 */
@@ -105,4 +156,18 @@ public abstract class AbstractPingServiceTask extends TimerTask implements IPing
 		return pingResult;
 	}
 
+	/**
+	 * Run thread
+	 */
+	@Override
+	public void run() {
+		ping(url);
+	}
+
+	/**
+	 * Get the ping protocol
+	 * 
+	 * @return a String
+	 */
+	protected abstract String getProtocol();
 }

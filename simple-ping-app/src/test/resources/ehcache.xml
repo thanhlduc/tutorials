@@ -11,4 +11,9 @@
 		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="3600"
 		memoryStoreEvictionPolicy="LRU" overflowToDisk="false">
 	</cache>
+	
+	<cache name="traceRouteCache" maxEntriesLocalHeap="100000"
+		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="3600"
+		memoryStoreEvictionPolicy="LRU" overflowToDisk="false">
+	</cache>
 </ehcache>
