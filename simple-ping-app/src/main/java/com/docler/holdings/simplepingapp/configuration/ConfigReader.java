@@ -23,6 +23,10 @@ public enum ConfigReader {
 	public static final String WINDOWS_ICMP_CMD = "windowsIcmpCommand";
 	public static final String LINUX_ICMP_CMD = "linuxIcmpCommand";
 
+	public static final String TIMEOUT = "timeout";
+	public static final String DELAY = "delay";
+	public static final String MAX_RESPONSE_TIME = "maxResponseTime";
+
 	private transient String fileName = "simplePingApp.properties";
 	private transient Properties props;
 	private transient final Logger logger = Logger.getLogger(ConfigReader.class);

@@ -11,12 +11,22 @@ public class Report {
 	private transient String icmpPing;
 	private transient String tcpPing;
 	private transient String traceRoute;
-	
+
 	/**
 	 * Default constructor
 	 */
-	public Report(){
-		
+	public Report() {
+
+	}
+
+	/**
+	 * Constructor with params
+	 */
+	public Report(String hostName, String icmpPing, String tcpPing, String traceRoute) {
+		this.hostName = hostName;
+		this.icmpPing = icmpPing;
+		this.tcpPing = tcpPing;
+		this.traceRoute = traceRoute;
 	}
 
 	/**
@@ -27,7 +37,8 @@ public class Report {
 	}
 
 	/**
-	 * @param hostName the hostName to set
+	 * @param hostName
+	 *            the hostName to set
 	 */
 	public void setHostName(String hostName) {
 		this.hostName = hostName;
@@ -41,7 +52,8 @@ public class Report {
 	}
 
 	/**
-	 * @param icmpPing the icmpPing to set
+	 * @param icmpPing
+	 *            the icmpPing to set
 	 */
 	public void setIcmpPing(String icmpPing) {
 		this.icmpPing = icmpPing;
@@ -55,7 +67,8 @@ public class Report {
 	}
 
 	/**
-	 * @param tcpPing the tcpPing to set
+	 * @param tcpPing
+	 *            the tcpPing to set
 	 */
 	public void setTcpPing(String tcpPing) {
 		this.tcpPing = tcpPing;
@@ -69,10 +82,11 @@ public class Report {
 	}
 
 	/**
-	 * @param traceRoute the traceRoute to set
+	 * @param traceRoute
+	 *            the traceRoute to set
 	 */
 	public void setTraceRoute(String traceRoute) {
 		this.traceRoute = traceRoute;
 	}
-	
+
 }

@@ -24,8 +24,8 @@ public class ReportSenderTest {
 
 	@Before
 	public void setUp() {
-		sender = new ReportSender();
-		factory = new ReportFactory();
+		sender = ReportSender.INSTANCE;
+		factory = ReportFactory.INSTANCE;
 	}
 
 	@Test

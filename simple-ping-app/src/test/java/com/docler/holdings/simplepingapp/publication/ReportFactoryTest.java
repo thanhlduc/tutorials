@@ -19,12 +19,13 @@ public class ReportFactoryTest {
 
 	@Before
 	public void setUp() {
-		factory = new ReportFactory();
+		factory = ReportFactory.INSTANCE;
 	}
 
 	@Test
 	public void toJson_NullReport_ReturnEmptyJson() {
-		assertThat(factory.toJsonFormat(null), is("{}"));
+		Report report = null;
+		assertThat(factory.toJsonFormat(report), is("{}"));
 	}
 
 	@Test

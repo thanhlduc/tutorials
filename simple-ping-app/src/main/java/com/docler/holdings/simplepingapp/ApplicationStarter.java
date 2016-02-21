@@ -16,7 +16,7 @@ public final class ApplicationStarter {
 	private static transient Logger logger = Logger.getLogger(ApplicationStarter.class);
 
 	public static void main(String[] args) throws Exception {
-		ReportSender http = new ReportSender();
+		ReportSender httpSender = ReportSender.INSTANCE;
 
 		logger.info("Testing: - Send Http POST request");
 		Report report = new Report();
@@ -24,8 +24,8 @@ public final class ApplicationStarter {
 		report.setIcmpPing("icmp");
 		report.setTcpPing("tcp/ip");
 		report.setTraceRoute("trace");
-		String content = new ReportFactory().toJsonFormat(report);
-		http.post(ConfigReader.INSTANCE.getProperty(ConfigReader.REPORT_HOST), content);
+		String content = ReportFactory.INSTANCE.toJsonFormat(report);
+		httpSender.post(ConfigReader.INSTANCE.getProperty(ConfigReader.REPORT_HOST), content);
 
 	}
 

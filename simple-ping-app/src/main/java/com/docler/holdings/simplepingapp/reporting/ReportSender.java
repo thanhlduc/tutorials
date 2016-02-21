@@ -14,15 +14,16 @@ import com.docler.holdings.simplepingapp.helper.StreamReader;
  * Creation and sending report
  *
  */
-public class ReportSender {
+public enum ReportSender {
+	INSTANCE;
 
 	private static final String USER_AGENT = "Mozilla/5.0";
-	private transient Logger logger = Logger.getLogger(getClass());
+	private static final Logger logger = Logger.getLogger(ReportSender.class);
 
 	/**
 	 * Constructor
 	 */
-	public ReportSender() {
+	private ReportSender() {
 
 	}
 

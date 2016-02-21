@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache name="PersonnesCache">
+	<!-- <diskStore path="java.io.tmpdir" /> -->
+
+	<cache name="icmpCache" maxEntriesLocalHeap="100000" eternal="false"
+		timeToIdleSeconds="3600" timeToLiveSeconds="3600"
+		memoryStoreEvictionPolicy="LRU" overflowToDisk="false">
+	</cache>
+
+	<cache name="tcpipCache" maxEntriesLocalHeap="100000"
+		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="3600"
+		memoryStoreEvictionPolicy="LRU" overflowToDisk="false">
+	</cache>
+</ehcache>

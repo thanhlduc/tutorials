@@ -1,9 +1,10 @@
 package com.docler.holdings.simplepingapp.ping;
 
 import java.io.InputStream;
+import java.util.Date;
 
-import org.apache.log4j.Logger;
-
+import com.docler.holdings.simplepingapp.cache.PingResult;
+import com.docler.holdings.simplepingapp.cache.ReportCacheManager;
 import com.docler.holdings.simplepingapp.configuration.ConfigReader;
 import com.docler.holdings.simplepingapp.helper.StreamReader;
 
@@ -12,25 +13,34 @@ import com.docler.holdings.simplepingapp.helper.StreamReader;
  * ICMP protocol ping service
  *
  */
-public final class IcmpPingService implements IPingService {
+public final class IcmpPingService extends AbstractPingService implements IPingService {
 
+	private static final String PING_ICMP_RESULT = "Ping icmp result: ";
+	private static final String PING_ICMP_COMMAND = "Ping icmp command: ";
 	private static final String SPACE = " ";
 	private static final String WINDOWS = "Windows";
 	private static final String OS_NAME = "os.name";
 
-	private static final Logger logger = Logger.getLogger(IcmpPingService.class);
-
-	@Override
-	public String ping(String url, int delay, int timeout) {
-		String result = pingUrl(url);
-		return result;
+	/**
+	 * Default constructor
+	 */
+	public IcmpPingService() {
+		super();
 	}
 
-	private String pingUrl(String url) {
+	/**
+	 * Default constructor
+	 */
+	public IcmpPingService(String url) {
+		super(url);
+	}
+
+	@Override
+	public String ping(String url) {
 		String result = "";
 		try {
 			String pingCmd = getPingCommand(url);
-			logger.info("Ping command: " + pingCmd);
+			logger.info(PING_ICMP_COMMAND + pingCmd);
 			Process myProcess = Runtime.getRuntime().exec(pingCmd);
 			myProcess.waitFor();
 
@@ -42,9 +52,24 @@ public final class IcmpPingService implements IPingService {
 				result = StreamReader.readStream(inputStream);
 			}
 		} catch (Exception e) {
-			logger.error("Error for ping the url: " + url);
+			logger.error(PING_ERROR + url);
+			// Publish report
+			publishReport(url);
 		}
+
+		// Save report
+		saveReport(url, result);
+
+		logger.info(PING_ICMP_RESULT + result);
 		return result;
+	}
+
+	@Override
+	protected void saveReport(String url, String result) {
+		PingResult pingResult = new PingResult();
+		pingResult.setPingDate(new Date());
+		pingResult.setPingResult(result);
+		ReportCacheManager.INSTANCE.putToIcmpCache(url, pingResult);
 	}
 
 	private String getPingCommand(String url) {
@@ -62,6 +87,11 @@ public final class IcmpPingService implements IPingService {
 		}
 		String pingString = cmd.toString();
 		return pingString;
+	}
+
+	@Override
+	public void run() {
+		ping(url);
 	}
 
 }
