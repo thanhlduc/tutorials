@@ -9,7 +9,7 @@ import org.junit.Test;
 import com.docler.holdings.simplepingapp.configuration.ConfigReader;
 
 /**
- * Test for {@link IcmpPingService}
+ * Test for {@link IcmpPingServiceTask}
  *
  */
 public class IcmpPingServiceTest {
@@ -18,7 +18,7 @@ public class IcmpPingServiceTest {
 
 	@Before
 	public void setUp() {
-		pingService = new IcmpPingService();
+		pingService = new IcmpPingServiceTask();
 	}
 
 	@Test

@@ -1,9 +1,7 @@
 package com.docler.holdings.simplepingapp.ping;
 
 import java.io.InputStream;
-import java.util.Date;
 
-import com.docler.holdings.simplepingapp.cache.PingResult;
 import com.docler.holdings.simplepingapp.cache.ReportCacheManager;
 import com.docler.holdings.simplepingapp.configuration.ConfigReader;
 import com.docler.holdings.simplepingapp.helper.StreamReader;
@@ -13,7 +11,7 @@ import com.docler.holdings.simplepingapp.helper.StreamReader;
  * ICMP protocol ping service
  *
  */
-public final class IcmpPingService extends AbstractPingService implements IPingService {
+public final class IcmpPingServiceTask extends AbstractPingServiceTask implements IPingService {
 
 	private static final String PING_ICMP_RESULT = "Ping icmp result: ";
 	private static final String PING_ICMP_COMMAND = "Ping icmp command: ";
@@ -24,14 +22,14 @@ public final class IcmpPingService extends AbstractPingService implements IPingS
 	/**
 	 * Default constructor
 	 */
-	public IcmpPingService() {
+	public IcmpPingServiceTask() {
 		super();
 	}
 
 	/**
 	 * Default constructor
 	 */
-	public IcmpPingService(String url) {
+	public IcmpPingServiceTask(String url) {
 		super(url);
 	}
 
@@ -58,18 +56,15 @@ public final class IcmpPingService extends AbstractPingService implements IPingS
 		}
 
 		// Save report
-		saveReport(url, result);
+		savePingResult(url, result);
 
 		logger.info(PING_ICMP_RESULT + result);
 		return result;
 	}
 
 	@Override
-	protected void saveReport(String url, String result) {
-		PingResult pingResult = new PingResult();
-		pingResult.setPingDate(new Date());
-		pingResult.setPingResult(result);
-		ReportCacheManager.INSTANCE.putToIcmpCache(url, pingResult);
+	protected void savePingResult(String url, String result) {
+		ReportCacheManager.INSTANCE.putToIcmpCache(url, createPingResult(url, result));
 	}
 
 	private String getPingCommand(String url) {

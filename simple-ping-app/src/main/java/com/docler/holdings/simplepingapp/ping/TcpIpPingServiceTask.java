@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.docler.holdings.simplepingapp.cache.ReportCacheManager;
 import com.docler.holdings.simplepingapp.reporting.ReportFactory;
 
 /**
@@ -14,7 +15,7 @@ import com.docler.holdings.simplepingapp.reporting.ReportFactory;
  * TCP/IP protocol ping service
  *
  */
-public final class TcpIpPingService extends AbstractPingService implements IPingService {
+public final class TcpIpPingServiceTask extends AbstractPingServiceTask implements IPingService {
 
 	private static final String HTTP_CODE = "http_code";
 	private static final String RESPONSE_TIME = "response_time";
@@ -29,7 +30,7 @@ public final class TcpIpPingService extends AbstractPingService implements IPing
 	/**
 	 * Default constructor
 	 */
-	public TcpIpPingService() {
+	public TcpIpPingServiceTask() {
 		super();
 	}
 
@@ -40,7 +41,7 @@ public final class TcpIpPingService extends AbstractPingService implements IPing
 	 * @param timeout
 	 * @param responseTimeMax
 	 */
-	public TcpIpPingService(String url, int timeout, long responseTimeMax) {
+	public TcpIpPingServiceTask(String url, int timeout, long responseTimeMax) {
 		super(url);
 		this.timeout = timeout;
 		this.responseTimeMax = responseTimeMax;
@@ -66,11 +67,20 @@ public final class TcpIpPingService extends AbstractPingService implements IPing
 			// Response time
 			stop = new Date();
 			timeToRespond = (stop.getTime() - start.getTime());
+			if (timeToRespond > (long) responseTimeMax) {
+				// Publish report
+				publishReport(url);
+			}
 
 			result = computeResponse(url, timeToRespond, con);
 		} catch (IOException e) {
 			logger.error(PING_ERROR + url, e);
+			// Publish report
+			publishReport(url);
 		}
+
+		// Save report
+		savePingResult(url, result);
 
 		logger.info(TCP_IP_PING_RESULT + result);
 		return result;
@@ -123,9 +133,8 @@ public final class TcpIpPingService extends AbstractPingService implements IPing
 	}
 
 	@Override
-	protected void saveReport(String url, String result) {
-		// TODO Auto-generated method stub
-
+	protected void savePingResult(String url, String result) {
+		ReportCacheManager.INSTANCE.putToTcpIpCache(url, createPingResult(url, result));
 	}
 
 }

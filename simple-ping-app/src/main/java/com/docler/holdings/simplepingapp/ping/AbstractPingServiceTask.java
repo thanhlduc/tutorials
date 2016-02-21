@@ -1,5 +1,8 @@
 package com.docler.holdings.simplepingapp.ping;
 
+import java.util.Date;
+import java.util.TimerTask;
+
 import org.apache.log4j.Logger;
 
 import com.docler.holdings.simplepingapp.cache.PingResult;
@@ -13,7 +16,7 @@ import com.docler.holdings.simplepingapp.reporting.ReportSender;
  * Abstract ping service
  *
  */
-public abstract class AbstractPingService extends Thread implements IPingService {
+public abstract class AbstractPingServiceTask extends TimerTask implements IPingService {
 
 	protected static final String PING_ERROR = "Unable to ping host: ";
 
@@ -24,14 +27,14 @@ public abstract class AbstractPingService extends Thread implements IPingService
 	/**
 	 * Default constructor
 	 */
-	public AbstractPingService() {
+	public AbstractPingServiceTask() {
 		super();
 	}
 
 	/**
 	 * Constructor with params
 	 */
-	public AbstractPingService(String url) {
+	public AbstractPingServiceTask(String url) {
 		super();
 		this.url = url;
 	}
@@ -86,5 +89,20 @@ public abstract class AbstractPingService extends Thread implements IPingService
 	 * @param url
 	 * @param result
 	 */
-	protected abstract void saveReport(String url, String result);
+	protected abstract void savePingResult(String url, String result);
+
+	/**
+	 * Create an ping report
+	 * 
+	 * @param url
+	 * @param result
+	 * @return
+	 */
+	protected PingResult createPingResult(String url, String result) {
+		PingResult pingResult = new PingResult();
+		pingResult.setPingDate(new Date());
+		pingResult.setPingResult(result);
+		return pingResult;
+	}
+
 }

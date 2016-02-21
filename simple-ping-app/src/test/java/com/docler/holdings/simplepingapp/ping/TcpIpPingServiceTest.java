@@ -10,15 +10,15 @@ import com.docler.holdings.simplepingapp.configuration.ConfigReader;
 
 /**
  * 
- * Test for {@link TcpIpPingService}
+ * Test for {@link TcpIpPingServiceTask}
  *
  */
 public class TcpIpPingServiceTest {
-	private TcpIpPingService pingService;
+	private TcpIpPingServiceTask pingService;
 
 	@Before
 	public void setUp() {
-		pingService = new TcpIpPingService();
+		pingService = new TcpIpPingServiceTask();
 	}
 
 	@Test
