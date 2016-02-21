@@ -6,7 +6,7 @@ import java.util.TimerTask;
 import org.apache.log4j.Logger;
 
 import com.docler.holdings.simplepingapp.cache.PingResult;
-import com.docler.holdings.simplepingapp.cache.ReportCacheManager;
+import com.docler.holdings.simplepingapp.cache.PingResultCacheManager;
 import com.docler.holdings.simplepingapp.reporting.Report;
 import com.docler.holdings.simplepingapp.reporting.ReportFactory;
 import com.docler.holdings.simplepingapp.reporting.ReportSender;
@@ -45,19 +45,19 @@ public abstract class AbstractPingServiceTask extends TimerTask implements IPing
 	 */
 	protected void publishReport(String url) {
 		String icmpPing = "";
-		PingResult icmpResult = ReportCacheManager.INSTANCE.getFromIcmpCache(url);
+		PingResult icmpResult = PingResultCacheManager.INSTANCE.getFromIcmpCache(url);
 		if (icmpResult != null) {
 			icmpPing = icmpResult.getPingResult();
 		}
 
 		String tcpPing = "";
-		PingResult tcpResult = ReportCacheManager.INSTANCE.getFromTcpIpCache(url);
+		PingResult tcpResult = PingResultCacheManager.INSTANCE.getFromTcpIpCache(url);
 		if (tcpResult != null) {
 			tcpPing = tcpResult.getPingResult();
 		}
 
 		String traceRoute = "";
-		PingResult traceResult = ReportCacheManager.INSTANCE.getFromTraceCache(url);
+		PingResult traceResult = PingResultCacheManager.INSTANCE.getFromTraceCache(url);
 		if (tcpResult != null) {
 			traceRoute = traceResult.getPingResult();
 		}

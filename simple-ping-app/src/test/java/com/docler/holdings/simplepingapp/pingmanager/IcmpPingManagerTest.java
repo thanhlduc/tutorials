@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.docler.holdings.simplepingapp.cache.PingResult;
-import com.docler.holdings.simplepingapp.cache.ReportCacheManager;
+import com.docler.holdings.simplepingapp.cache.PingResultCacheManager;
 import com.docler.holdings.simplepingapp.configuration.ConfigReader;
 
 /**
@@ -36,8 +36,8 @@ public class IcmpPingManagerTest {
 
 		// Verify report in cache
 		Thread.sleep(10000);
-		PingResult jasminReport = ReportCacheManager.INSTANCE.getFromIcmpCache(url1);
-		PingResult oranumReport = ReportCacheManager.INSTANCE.getFromIcmpCache(url2);
+		PingResult jasminReport = PingResultCacheManager.INSTANCE.getFromIcmpCache(url1);
+		PingResult oranumReport = PingResultCacheManager.INSTANCE.getFromIcmpCache(url2);
 		assertThat(jasminReport != null, is(true));
 		assertThat(oranumReport != null, is(true));
 	}

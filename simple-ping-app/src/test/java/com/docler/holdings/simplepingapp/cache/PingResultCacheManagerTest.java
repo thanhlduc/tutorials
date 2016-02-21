@@ -8,10 +8,10 @@ import java.util.Date;
 import org.junit.Test;
 
 /**
- * Test for {@link ReportCacheManager}
+ * Test for {@link PingResultCacheManager}
  *
  */
-public class ReportCacheManagerTest {
+public class PingResultCacheManagerTest {
 
 	@Test
 	public void putToIcmpCache_Key_URL1_PingResult_Return1ElementInCache() {
@@ -19,9 +19,9 @@ public class ReportCacheManagerTest {
 		Date today = new Date();
 		pingResult.setPingDate(today);
 		pingResult.setPingResult("ping1");
-		ReportCacheManager.INSTANCE.putToIcmpCache("URL1", pingResult);
+		PingResultCacheManager.INSTANCE.putToIcmpCache("URL1", pingResult);
 
-		PingResult cachedResult = ReportCacheManager.INSTANCE.getFromIcmpCache("URL1");
+		PingResult cachedResult = PingResultCacheManager.INSTANCE.getFromIcmpCache("URL1");
 		assertThat(cachedResult.getPingDate(), is(today));
 		assertThat(cachedResult.getPingResult(), is("ping1"));
 	}
@@ -32,9 +32,9 @@ public class ReportCacheManagerTest {
 		Date today = new Date();
 		pingResult.setPingDate(today);
 		pingResult.setPingResult("ping1");
-		ReportCacheManager.INSTANCE.putToTcpIpCache("URL1", pingResult);
+		PingResultCacheManager.INSTANCE.putToTcpIpCache("URL1", pingResult);
 
-		PingResult cachedResult = ReportCacheManager.INSTANCE.getFromTcpIpCache("URL1");
+		PingResult cachedResult = PingResultCacheManager.INSTANCE.getFromTcpIpCache("URL1");
 		assertThat(cachedResult.getPingDate(), is(today));
 		assertThat(cachedResult.getPingResult(), is("ping1"));
 	}

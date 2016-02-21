@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.docler.holdings.simplepingapp.cache.ReportCacheManager;
+import com.docler.holdings.simplepingapp.cache.PingResultCacheManager;
 import com.docler.holdings.simplepingapp.reporting.ReportFactory;
 
 /**
@@ -134,7 +134,7 @@ public final class TcpIpPingServiceTask extends AbstractPingServiceTask implemen
 
 	@Override
 	protected void savePingResult(String url, String result) {
-		ReportCacheManager.INSTANCE.putToTcpIpCache(url, createPingResult(url, result));
+		PingResultCacheManager.INSTANCE.putToTcpIpCache(url, createPingResult(url, result));
 	}
 
 }

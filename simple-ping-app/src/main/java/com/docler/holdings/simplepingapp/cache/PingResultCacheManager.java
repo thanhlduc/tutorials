@@ -12,7 +12,7 @@ import net.sf.ehcache.Element;
  * Cache for ping report
  * 
  */
-public enum ReportCacheManager {
+public enum PingResultCacheManager {
 	INSTANCE;
 
 	public static final String ICMP_CACHE_NAME = "icmpCache";
@@ -24,13 +24,13 @@ public enum ReportCacheManager {
 
 	private Ehcache tcpipCache;
 
-	private transient final Logger logger = Logger.getLogger(ReportCacheManager.class);
+	private transient final Logger logger = Logger.getLogger(PingResultCacheManager.class);
 
 	/**
 	 * Default constructor
 	 * 
 	 */
-	private ReportCacheManager() {
+	private PingResultCacheManager() {
 		try {
 			logger.info("Create new instance of ReportCacheManager");
 			cacheManager = createCacheManager();

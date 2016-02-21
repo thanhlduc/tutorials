@@ -2,7 +2,7 @@ package com.docler.holdings.simplepingapp.ping;
 
 import java.io.InputStream;
 
-import com.docler.holdings.simplepingapp.cache.ReportCacheManager;
+import com.docler.holdings.simplepingapp.cache.PingResultCacheManager;
 import com.docler.holdings.simplepingapp.configuration.ConfigReader;
 import com.docler.holdings.simplepingapp.helper.StreamReader;
 
@@ -64,7 +64,7 @@ public final class IcmpPingServiceTask extends AbstractPingServiceTask implement
 
 	@Override
 	protected void savePingResult(String url, String result) {
-		ReportCacheManager.INSTANCE.putToIcmpCache(url, createPingResult(url, result));
+		PingResultCacheManager.INSTANCE.putToIcmpCache(url, createPingResult(url, result));
 	}
 
 	private String getPingCommand(String url) {
