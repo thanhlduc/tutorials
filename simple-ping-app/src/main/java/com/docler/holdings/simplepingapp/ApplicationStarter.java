@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import com.docler.holdings.simplepingapp.configuration.ConfigReader;
 import com.docler.holdings.simplepingapp.pingmanager.IcmpPingManager;
 import com.docler.holdings.simplepingapp.pingmanager.TcpIpPingManager;
+import com.docler.holdings.simplepingapp.pingmanager.TraceRoutePingManager;
 
 /**
  * 
@@ -35,6 +36,7 @@ public final class ApplicationStarter {
 
 		// Trace route
 		logger.info("Start Trace Route");
+		new TraceRoutePingManager().pingHosts(urls);
 
 		// Wait for ping
 		Thread.sleep(100000);

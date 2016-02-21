@@ -8,7 +8,7 @@ import com.docler.holdings.simplepingapp.configuration.ConfigReader;
  * Trace route ping service
  *
  */
-public final class TraceRoutePingServiceTask extends AbstractCommandPingServiceTask implements IPingService {
+public final class TraceRoutePingServiceTask extends AbstractCommandPingServiceTask {
 
 	private static final String TRACE_ROUTE = "Trace Route";
 

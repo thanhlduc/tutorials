@@ -17,6 +17,7 @@ import com.docler.holdings.simplepingapp.reporting.ReportFactory;
  */
 public final class TcpIpPingServiceTask extends AbstractPingServiceTask {
 
+	private static final String MILLISECONDS = " ms";
 	private static final String TCP_IP = "TCP/IP";
 	private static final String HTTP_CODE = "http_code";
 	private static final String RESPONSE_TIME = "response_time";
@@ -51,7 +52,7 @@ public final class TcpIpPingServiceTask extends AbstractPingServiceTask {
 		int responseCode = con.getResponseCode();
 		Map<String, String> responseMap = new HashMap<>();
 		responseMap.put(HOST, url);
-		responseMap.put(RESPONSE_TIME, String.valueOf(timeToRespond));
+		responseMap.put(RESPONSE_TIME, String.valueOf(timeToRespond) + MILLISECONDS);
 		responseMap.put(HTTP_CODE, String.valueOf(responseCode));
 		result = ReportFactory.INSTANCE.toJsonFormat(responseMap);
 		return result;
@@ -107,7 +108,7 @@ public final class TcpIpPingServiceTask extends AbstractPingServiceTask {
 		Date start = new Date();
 		HttpURLConnection con = (HttpURLConnection) new URL(httpURL).openConnection();
 		con.setConnectTimeout(timeout);
-		con.setReadTimeout(timeout);
+		// con.setReadTimeout(timeout);
 		con.setRequestMethod(HEAD);
 		con.connect();
 

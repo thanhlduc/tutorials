@@ -109,7 +109,7 @@ public abstract class AbstractPingServiceTask extends TimerTask implements IPing
 
 		String traceRoute = "";
 		PingResult traceResult = PingResultCacheManager.INSTANCE.getFromTraceCache(url);
-		if (tcpResult != null) {
+		if (traceResult != null) {
 			traceRoute = traceResult.getPingResult();
 		}
 

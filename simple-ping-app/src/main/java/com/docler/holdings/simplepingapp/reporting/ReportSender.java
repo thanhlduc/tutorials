@@ -17,6 +17,10 @@ import com.docler.holdings.simplepingapp.helper.StreamReader;
 public enum ReportSender {
 	INSTANCE;
 
+	private static final String RESPONSE_CONTENT = "Response content : ";
+	private static final String RESPONSE_CODE = "Response Code : ";
+	private static final String SEND_POST_REQUEST_TO_URL = "Sending 'POST' request to URL : ";
+	private static final String POST_CONTENT = "Post content : ";
 	private static final String USER_AGENT = "Mozilla/5.0";
 	private static final Logger logger = Logger.getLogger(ReportSender.class);
 
@@ -40,7 +44,7 @@ public enum ReportSender {
 		try {
 			url = new URL(urlAddress);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			logger.info("Sending 'POST' request to URL : " + url.toString());
+			logger.info(SEND_POST_REQUEST_TO_URL + url.toString());
 
 			// add request header
 			con.setRequestMethod("POST");
@@ -48,12 +52,12 @@ public enum ReportSender {
 			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
 			// Send post request
+			logger.warn(POST_CONTENT + content);
 			con.setDoOutput(true);
 			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
 			wr.writeBytes(content);
 			wr.flush();
 			wr.close();
-			logger.info("Post content : " + content);
 
 			httpResponseCode = parseResponse(content, url, con);
 
@@ -75,9 +79,9 @@ public enum ReportSender {
 	 */
 	private int parseResponse(String content, URL url, HttpURLConnection con) throws IOException {
 		int responseCode = con.getResponseCode();
-		logger.info("Response Code : " + responseCode);
+		logger.info(RESPONSE_CODE + responseCode);
 		String responseContent = StreamReader.readStream(con.getInputStream());
-		logger.info("Response content : " + responseContent);
+		logger.info(RESPONSE_CONTENT + responseContent);
 		return responseCode;
 	}
 
