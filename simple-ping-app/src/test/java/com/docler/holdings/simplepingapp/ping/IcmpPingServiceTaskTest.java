@@ -13,7 +13,8 @@ import com.docler.holdings.simplepingapp.configuration.ConfigReader;
  *
  */
 public class IcmpPingServiceTaskTest {
-
+	private static final String WINDOWS = "Windows";
+	private static final String OS_NAME = "os.name";
 	private transient IPingService pingService;
 
 	@Before
@@ -31,6 +32,10 @@ public class IcmpPingServiceTaskTest {
 	@Test
 	public void ping_InvalidURL_ReturnNull() {
 		String pingResult = pingService.ping("unknown");
-		assertThat(pingResult.contains("unknown"), is(true));
+		if (System.getProperty(OS_NAME).startsWith(WINDOWS)) {
+			assertThat(pingResult.contains("unknown"), is(true));
+		} else {
+			assertThat(pingResult.isEmpty(), is(true));
+		}
 	}
 }

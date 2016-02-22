@@ -13,7 +13,8 @@ import com.docler.holdings.simplepingapp.configuration.ConfigReader;
  *
  */
 public class TraceRoutePingServiceTaskTest {
-
+	private static final String WINDOWS = "Windows";
+	private static final String OS_NAME = "os.name";
 	private transient IPingService pingService;
 
 	@Before
@@ -22,15 +23,25 @@ public class TraceRoutePingServiceTaskTest {
 	}
 
 	@Test
-	public void ping_URL_jasminDotcom_ReturnPingResult() {
-		String jasminURL = ConfigReader.INSTANCE.getProperty(ConfigReader.SURVEY_HOST1);
+	public void ping_URL_jasminDotcom_ReturnPingResult()
+			throws InterruptedException {
+		String jasminURL = ConfigReader.INSTANCE
+				.getProperty(ConfigReader.SURVEY_HOST1);
 		String pingResult = pingService.ping(jasminURL);
+
+		Thread.sleep(1000);
 		assertThat(pingResult.contains(jasminURL), is(true));
 	}
 
 	@Test
-	public void ping_InvalidURL_ReturnError() {
+	public void ping_InvalidURL_ReturnError() throws InterruptedException {
 		String pingResult = pingService.ping("unknown");
-		assertThat(pingResult.contains("unknown"), is(true));
+
+		Thread.sleep(1000);
+		if (System.getProperty(OS_NAME).startsWith(WINDOWS)) {
+			assertThat(pingResult.contains("unknown"), is(true));
+		} else {
+			assertThat(pingResult.isEmpty(), is(true));
+		}
 	}
 }
