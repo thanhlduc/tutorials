@@ -20,7 +20,7 @@ public enum ReportSender {
 	private static final String RESPONSE_CONTENT = "Response content : ";
 	private static final String RESPONSE_CODE = "Response Code : ";
 	private static final String SEND_POST_REQUEST_TO_URL = "Sending 'POST' request to URL : ";
-	private static final String POST_CONTENT = "Post content : ";
+	private static final String POST_CONTENT = "Post report : ";
 	private static final String USER_AGENT = "Mozilla/5.0";
 	private static final Logger logger = Logger.getLogger(ReportSender.class);
 
@@ -62,7 +62,7 @@ public enum ReportSender {
 			httpResponseCode = parseResponse(content, url, con);
 
 		} catch (IOException ex) {
-			logger.error("HTTP Post request error : " + urlAddress + " with content: " + content);
+			logger.warn("HTTP Post request error : " + urlAddress + " with content: " + content);
 		}
 
 		return httpResponseCode;

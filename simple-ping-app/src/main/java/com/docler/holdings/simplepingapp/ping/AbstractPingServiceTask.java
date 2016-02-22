@@ -60,7 +60,7 @@ public abstract class AbstractPingServiceTask extends TimerTask implements IPing
 			logger.info(PING_WITH + getProtocol() + COMMAND + pingCmd);
 			result = processPingCommand(pingCmd);
 		} catch (Exception e) {
-			logger.error(PING_ERROR + getProtocol() + FOR_HOST + url, e);
+			logger.warn(PING_ERROR + getProtocol() + FOR_HOST + url, e);
 			// Publish report
 			publishReport(url);
 		}
